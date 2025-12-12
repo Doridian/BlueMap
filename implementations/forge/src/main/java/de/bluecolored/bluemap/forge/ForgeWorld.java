@@ -34,6 +34,7 @@ import net.minecraft.world.level.storage.LevelResource;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.nio.file.Path;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutionException;
@@ -47,8 +48,8 @@ public class ForgeWorld implements ServerWorld {
     public ForgeWorld(ServerLevel delegate) {
         this.delegate = new WeakReference<>(delegate);
 
-        MinecraftServer server = delegate.getServer();
-        this.worldFolder = delegate.getServer().getServerDirectory().toPath()
+        MinecraftServer server = Objects.requireNonNull(delegate.getServer());
+        this.worldFolder = server.getServerDirectory().toPath()
                 .resolve(server.getWorldPath(LevelResource.ROOT));
 
         ResourceLocation id = delegate.dimension().location();
